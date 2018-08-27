@@ -1,0 +1,17 @@
+language: python
+
+python:
+  - "2.7.12"
+
+cache: pip
+
+install:
+  - pip install -r requirements.txt
+
+script:
+  - py.test --cov=api
+  - coverage report
+
+after_success:
+  - coveralls
+  - Rscript -e 'covr::coveralls()'

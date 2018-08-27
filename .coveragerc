@@ -1,0 +1,23 @@
+[run]
+source = api
+[report]
+show_missing=True
+omit=
+   */venv/*
+   */tests/*
+   */.pytest_cache/*
+   *.pyc
+   */.vscode/*
+   .gitignore
+   .coverage
+    Procfile
+    exclude_lines =
+        pragma: no cover
+        def __repr__
+        raise AssertionError
+        raise NotImplementedError
+        if __name__ == .__main__.:
+
+show_missing = True
+
+ignore_errors = True
