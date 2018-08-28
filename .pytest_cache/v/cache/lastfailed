@@ -1,6 +1,0 @@
-{
-  "tests/test_answers.py::test_post_answer_is_application_json_format": true, 
-  "tests/test_questions.py::test_get_a_question_is_successfully_rendered_for_details_page_with_id": true, 
-  "tests/test_questions.py::test_get_all_questions_is_successfully_rendered": true, 
-  "tests/test_questions.py::test_post_question_is_application_json_format": true
-}
