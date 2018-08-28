@@ -6,9 +6,8 @@ class configurations:
         return app.config['SECRET_KEY']
 
 
-
     def connectToDB(self):
-        connectionString = "dbname=andela user=root host=localhost password=mysql"
+        connectionString = "dbname=andela user=postgres host=localhost"
         try:
             return psycopg2.connect(connectionString)
         except:
@@ -45,7 +44,7 @@ class configurations:
         sqlcommandforAnswers =(
             """
             CREATE TABLE IF NOT EXISTS answers(answer_id SERIAL PRIMARY KEY,
-             question_body VARCHAR(250), answer_author VARCHAR(100),
+             answer_body VARCHAR(250), answer_author VARCHAR(100),
               answer_post_date TIMESTAMP, answer_votes INT(12), answer_status INT(2), question_id INT(12))
             """
         )
@@ -57,6 +56,14 @@ class configurations:
               comment_post_date TIMESTAMP, answer_id INT(12), question_id INT(12))
             """
         )
+
+        sqlcommandforUsers =(
+            """
+            CREATE TABLE IF NOT EXISTS users(user_id SERIAL PRIMARY KEY,
+             username VARCHAR(250), password VARCHAR(100),
+             admin INT(2))
+            """
+        )
         conn = self.connectToDB()
         self.cur = conn.cursor()
         self.cur.execute(sqlcommandforQuestions)
@@ -64,4 +71,6 @@ class configurations:
         self.cur.execute(sqlcommandforAnswers)
         conn.commit()
         self.cur.execute(sqlcommandforComments)
+        conn.commit()
+        self.cur.execute(sqlcommandforUsers)
         conn.commit()
