@@ -1,3 +1,4 @@
+
 from api.main.home import *
 from api.config import *
 
@@ -15,7 +16,7 @@ def SignUp(current_user):
     new_user = User(username = input_data['username'], password = hashed_password, admin = False)
     conn = config.connectToDB()
     cur = conn.cursor()
-    cur.execute("INSERT INTO users(username, password, admin) VALUES (%s, %s, %s);", (new_user.username, new_user.password, new_user.admin))
+    cur.execute("INSERT INTO users(username, password, admin) VALUES (%s, %s, %s);", new_user)
     cur.commit()
     return jsonify({'Message' : 'New User Created'})
 

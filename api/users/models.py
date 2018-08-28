@@ -5,10 +5,6 @@ class User():
         self.password = password
         self.admin = admin
 
-    def getusername(self,username):
-        return self.username
-
-
 
 
     

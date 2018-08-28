@@ -1,16 +1,18 @@
-from api.main.home import *
+from api.main.home import app, request, psycopg2, jsonify, jwt
+from functools import wraps
 
-class configurations:
-    def secrete_key(self):
-        app.config['SECRET_KEY'] == "ThisIsMySecretKey"
-        return app.config['SECRET_KEY']
-
+class Configurations:
 
     def connectToDB(self):
-        connectionString = "dbname=andela user=postgres host=localhost"
+        print('Successfully Connected to DB')
+        connectionString = "dbname='stackoverflow' user='postgres' host='localhost' port='5432'"
         try:
-            return psycopg2.connect(connectionString)
+             
+            psycopg2.connect(connectionString)
+            print('Successfully Connected to DB')
+            return jsonify({'Message' : 'Successfully Connected to DB'})
         except:
+            print('Cannot connect to database')
             return jsonify({'Message' : 'Cannot connect to database'})
 
     def token_required(self,f):

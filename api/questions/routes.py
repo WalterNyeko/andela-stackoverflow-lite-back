@@ -3,7 +3,7 @@ from api.config import *
 
 questions = Blueprint('questions', __name__)
 
-config = configurations()
+config = Configurations()
 
 @questions.route('/api/v1/questions', methods=['GET'])
 @config.token_required
