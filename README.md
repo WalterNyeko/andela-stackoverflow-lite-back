@@ -45,12 +45,12 @@
 4. At this point the server should be running.
 5. The application is set to run on port 8080 
 
-|URL for the route| Function Performed by the route| HTTP Method|
+|URL for the route| Function Performed| HTTP Method|
 |-----------------|--------------------------------|-------------|
 |`127.0.0.1:8080/api/v1/questions`| Retrive all questions|`GET`|
 |`127.0.0.1:8080/api/v1/questions`|Post a question|`POST`|
-|`127.0.0.1:8080/api/v1/questions/question_id`|Retrieve Question of a particular ID|`GET`|
-|`127.0.0.1:8080/api/v1/questions/question_id/answers`|Post Answers to Question of a given ID|`POST`|
+|`127.0.0.1:8080/api/v1/questions/question_id`|Retrieve One Question|`GET`|
+|`127.0.0.1:8080/api/v1/questions/question_id/answers`|Post Answers to Question|`POST`|
 |`127.0.0.1:8080/api/v1/questions/question_id`|Deletes a question|`DELETE`|
 |`127.0.0.1:8080/api/v1/questions/question_id/answers/answer_id`|Accept/Edit an answer|`PUT`|
 |`127.0.0.1:8080/api/v1/auth/signup`|Register User|`POST`|
