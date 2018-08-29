@@ -39,13 +39,16 @@
 3. If Validations are being respected
 
 ## Testing the App Locally.
-1. Use [Postman](https://www.getpostman.com/) to test the application locally
+1. [Postman](https://www.getpostman.com/) should be used to test the application locally
 2. Move to the project directory locally
 3. Once you are in the project's root directory, run the command `python run.py`.
 4. At this point the server should be running.
-5. The application is set to run on port 8080, so the URL for testing this api is `127.0.0.1:8080/api/v1/questions/question_id/answers`. 
-6. Testing for this API requires use of Postman.
-7. The above instruction should be able to return all the questions in the data structure when you paste the test URL.
+5. The application is set to run on port 8080 
+
+|URL for the route| Function Performed by the route| HTTP Method|
+-----------------------------------------------------------------
+|`127.0.0.1:8080/api/v1/questions| Retrive all questions|GET|
+-------------------------------------------------------------
 
 ## Deployment
 1. The app can be deplyed on Heroku following the Heroku [Documentation](https://devcenter.heroku.com/categories/reference).
