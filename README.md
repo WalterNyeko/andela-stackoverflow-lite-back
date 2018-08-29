@@ -46,9 +46,9 @@
 5. The application is set to run on port 8080 
 
 |URL for the route| Function Performed by the route| HTTP Method|
------------------------------------------------------------------
+|-----------------|--------------------------------|-------------|
 |`127.0.0.1:8080/api/v1/questions| Retrive all questions|GET|
--------------------------------------------------------------
+------------------|---------------|-------------------------|
 
 ## Deployment
 1. The app can be deplyed on Heroku following the Heroku [Documentation](https://devcenter.heroku.com/categories/reference).
