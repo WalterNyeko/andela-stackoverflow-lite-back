@@ -1,17 +1,23 @@
 # StackOverflow-Lite
-## Andela Challenge 2
-[![Build Status](https://travis-ci.org/JSnakegitHub/StackOverflow-Lite.svg?branch=post_an_answer_api)](https://travis-ci.org/JSnakegitHub/StackOverflow-Lite)
-[![Coverage Status](https://coveralls.io/repos/github/JSnakegitHub/StackOverflow-Lite/badge.svg?branch=post_an_answer_api)](https://coveralls.io/github/JSnakegitHub/StackOverflow-Lite?branch=post_an_answer_api)
+## Andela Challenge 3
+[![Build Status](https://travis-ci.org/JSnakegitHub/Challenge-3.svg?branch=develop)](https://travis-ci.org/JSnakegitHub/Challenge-3)
+[![Coverage Status](https://coveralls.io/repos/github/JSnakegitHub/Challenge-3/badge.svg?branch=develop)](https://coveralls.io/github/JSnakegitHub/Challenge-3?branch=develop)
 
 ## Installation Instructions for the app:
 1. Install Flask using `pip install flask`
-2. Clone the app using `git clone https://github.com/JSnakegitHub/StackOverflow-Lite.git`
+2. Clone the app using `git clone https://github.com/JSnakegitHub/Challenge-3.git`
 
 ## Getting Started With Tests:
 ### For Python 2:
 1. `pip install pytest`
+2. `pip install coverage report`
+3. `pip install pytest-cov`
+4. `pip install pytest-xdist`
 ### For Python 3:
 1. `pip3 install pytest`
+2. `pip3 install coverage report`
+3. `pip3 install pytest-cov`
+4. `pip3 install pytest-xdist`
 ## Running the tests on a virtual environment
 ### For python 2:
 1. `pip install -U virtualenv`
