@@ -1,6 +1,0 @@
-{
-  "tests/test_answers.py": true, 
-  "tests/test_comments.py": true, 
-  "tests/test_questions.py": true, 
-  "tests/test_users.py": true
-}
