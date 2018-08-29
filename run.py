@@ -1,12 +1,12 @@
-from api.main.home import app
-from api.config import Configurations
-import sys
+from flask import Flask
+from api.views import app
+from api.connectdb import Configurations
 
-sys.dont_write_bytecode = True
+config = Configurations()
+config.create_questions_table()
+config.create_users_table()
+config.create_answers_table()
 
-app.config['SECRET_KEY'] == "ThisIsMySecretKey"
 
-if __name__ == '__main__':
-    config = Configurations()
-    config.create_tables
+if __name__ =='__main__':
     app.run(debug=True, port=8080)

@@ -1,6 +1,6 @@
 import json
 import pytest
-from api.main.home import app
+from api.views import app
 
 @pytest.fixture
 def client(request):
@@ -31,7 +31,12 @@ def test_get_a_question_is_successfully_rendered_for_details_page_with_id(client
     assert response.status_code == 200
 
 # Tests for POST endpoints. Checking resulting json data:
- 
+
+# Testing if the answer posted is stored
+def test_post_answer_is_acually_posting(client):
+    response = client.post('/api/v1/questions/1/answers', data={ "content": "Lorem ipsum dolor sit amet"})
+    assert not b'Answer posted successfully' in response.data
+   
 # Testing if the question posted is really stored
 def test_post_question_is_actually_posting(client):
     response = client.post('/api/v1/questions', data={"title": "What is wrong", "content" : "Lorem ipsum dolor sit amet"},content_type='application/json')
@@ -56,6 +61,12 @@ def test_post_question_is_application_json_format(client):
     assert response.status_code == 200
 
 
+# Testing if the content-type of the page after posting answer is application/json or text/html
+def test_post_answer_is_application_json_format(client):
+    response = client.post('/api/v1/questions/1/answers', data=json.dumps(dict(
+                content='walter@realpython.com'
+            )),content_type='application/json')
+    assert response.status_code == 200
 
 
 
