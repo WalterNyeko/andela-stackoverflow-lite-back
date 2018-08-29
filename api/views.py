@@ -48,7 +48,7 @@ def SignUp():
         email = request_data['email']
         password = request_data['password']
         userObject.signUp(username, email, password)
-        return "User Created successfully"
+        return jsonify({"Message":"User Created successfully"}), 201
 
 @app.route('/api/v1/auth/login', methods=['GET'])
 @token_required
@@ -89,13 +89,13 @@ def getAllQuestions():
 def getOneQuestionById(question_id):
     question = questionObject.view_one_question(question_id=question_id)
     answers = answerObject.view_all_answer(question_id)
-    return jsonify({'Questions': question, 'Answers' : answers})
+    return jsonify({'Questions': question, 'Answers' : answers}), 200
 
 @app.route('/api/v1/questions/<int:question_id>', methods=['DELETE'])
 def DeleteQuestion(question_id):
     answerObject.delete_answer(question_id)
     questionObject.delete_question(question_id)
-    return jsonify({'Questions' : 'Question Successfully Deleted'})
+    return jsonify({'Questions' : 'Question Successfully Deleted'}), 202
       
 @app.route('/api/v1/questions/<int:question_id>/answers', methods=['POST'])
 def postAnswer(question_id):
@@ -107,7 +107,7 @@ def postAnswer(question_id):
         answer_author = request_data['answer_author']
         question_id = question_id
         answerObject.post_answer(answer_body, answer_author, question_id)
-        return "Answer posted successfully"
+        return ({"Message": "Answer posted successfully"}), 201
 
 @app.route('/api/v1/questions/<int:question_id>/answers/<int:answer_id>', methods=['PUT'])
 def acceptAnswer(question_id, answer_id):
@@ -116,5 +116,5 @@ def acceptAnswer(question_id, answer_id):
         return "This Answer Is Already Accepted"
     else:
         answerObject.accept_answer(answer_id)
-        return "Answer Accepted Successfully"
+        return jsonify({"Message": "Answer Accepted Successfully"}), 200
 
