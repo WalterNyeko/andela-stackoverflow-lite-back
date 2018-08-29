@@ -1,36 +1,18 @@
-from api.main.home import *
+from api.main.home import app
+from flask import jsonify
+import psycopg2
 
-class configurations:
-    def secrete_key(self):
-        app.config['SECRET_KEY'] == "ThisIsMySecretKey"
-        return app.config['SECRET_KEY']
 
+class Configurations:
 
     def connectToDB(self):
-        connectionString = "dbname=andela user=postgres host=localhost"
+        connectionString = "dbname=stackoverflow user=postgres host=localhost port=5432"
         try:
-            return psycopg2.connect(connectionString)
+            psycopg2.connect(connectionString)
+            print("Connection established")
+            return jsonify({'Message' : 'Connected to database'})
         except:
             return jsonify({'Message' : 'Cannot connect to database'})
-
-    def token_required(self,f):
-        @wraps
-        def decorated(*args, **kwargs):
-            token = None
-            if 'stackoverflow-lite' in request.headers:
-                token = request.headers['stackoverflow-lite']
-            if not token:
-                return jsonify({'Message' : 'Token is missing'})
-            try:
-                data = jwt.decode(token, app.config['SECRET_KEY'])
-                conn = self.connectToDB()
-                cur = conn.cursor()
-                cur.execute("SELECT * FROM users WHERE username = %s;", data['username'])
-                current_user = cur.fetchall()
-            except:
-                return jsonify({'Message' : 'Token is invalid'})
-            return f(current_user, *args, **kwargs)
-        return decorated
 
     def create_tables(self):
         sqlcommandforQuestions =(

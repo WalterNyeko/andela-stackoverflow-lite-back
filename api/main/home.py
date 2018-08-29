@@ -1,19 +1,16 @@
-from flask import Flask, request, jsonify, make_response, Blueprint
-# from api.users.routes import users
-from werkzeug.security import generate_password_hash, check_password_hash
-from api.answers.models import Answer
-from api.comments.models import Comments
-from api.questions.models import Question
-from api.users.models import User
-import datetime
-import psycopg2
-import psycopg2.extras
-import jwt
-from api.config import configurations
-from functools import wraps
+from flask import Flask, request, jsonify
+from api.config import Configurations
+from api.users.routes import users
+from api.questions.routes import questions
+from api.answers.routes import answers
+from api.comments.routes import comments
 
-config = configurations()
-config.create_tables()
+config = Configurations()
+config.create_tables
 
 app = Flask(__name__)
+app.register_blueprint(users)
+app.register_blueprint(questions)
+app.register_blueprint(answers)
+app.register_blueprint(comments)
 
