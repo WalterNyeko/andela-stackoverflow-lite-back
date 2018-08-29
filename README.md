@@ -65,7 +65,7 @@ Contributions for this project is allowed.
 GitHub was used to help track the different versions of the project. 
 
 ## Authors
-1. Walter Nyeko, under supervision of Hadijah Kyampeire
+1. Walter Nyeko, under supervision of Patrick Walukaga
 ## License
 1. This project is licensed under the Andela License
 
