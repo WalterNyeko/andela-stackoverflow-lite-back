@@ -61,7 +61,6 @@ def login():
         return jsonify({"Message": "Username is missing"}), 400
     if username != 'test' and password != 'test':
         return jsonify({"Message": "Bad username or password"}), 401
-
     access_token = create_access_token(identity=username)
     return jsonify({"Messqge" : "Successfully Logged In", "Token" : access_token}), 200
 
