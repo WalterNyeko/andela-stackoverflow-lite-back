@@ -34,19 +34,19 @@ def SignUp():
         username = request_data['username']
         email = request_data['email']
         password = request_data['password']
-        is_valid = validate_email(email,verify=True)
-        if (is_valid==True):
+        # is_valid = validate_email(email,verify=True)
+        # if (is_valid==True):
 
-            conn = config.connectToDB()
-            cur = conn.cursor()
-            result = cur.execute("SELECT username from users WHERE username=%s", [username])
-            if result is not None:
-                return jsonify({'Message': 'User already exists'})
-            else:   
-                userObject.signUp(username, email, password)
-                return jsonify({"Message":"User Created successfully"}), 201
-        else:
-            return jsonify({'Message': 'Wrong Email Detected'}), 400
+        conn = config.connectToDB()
+        cur = conn.cursor()
+        result = cur.execute("SELECT username from users WHERE username=%s", [username])
+        if result[0] is not None:
+            return jsonify({'Message': 'User already exists'})
+        else:   
+            userObject.signUp(username, email, password)
+            return jsonify({"Message":"User Created successfully"}), 201
+        # else:
+        #     return jsonify({'Message': 'Wrong Email Detected'}), 400
         
         
 
@@ -59,8 +59,15 @@ def login():
     password = request.json.get('password', None)
     if not username:
         return jsonify({"Message": "Username is missing"}), 400
-    if username != 'test' and password != 'test':
-        return jsonify({"Message": "Bad username or password"}), 401
+    db_user = userObject.checkuser(username)
+    # striped_user = db_user.strip()
+    db_pass = userObject.checkPassword(password)
+    if username != db_user[0] or password != db_pass[0]:
+        print(username)
+        print(db_user)
+        print(password)
+        print(db_pass)
+        return jsonify({"Message": "Invalid username or password"}), 401
     access_token = create_access_token(identity=username)
     return jsonify({"Messqge" : "Successfully Logged In", "Token" : access_token}), 200
 
@@ -74,9 +81,13 @@ def postQuestion():
         question_title = request_data['question_title']
         question_body = request_data['question_body']
         question_author = request_data['question_author']
+        # question_exists = questionObject.view_one_question_by_title(question_title)
+        # if question_exists[0] is not None:
+        #     return jsonify({'Message': 'Question already exists'})
+        # else:
         questionObject.post_question(question_title, question_body, question_author)
-        questions = questionObject.view_all_questions()
-        return jsonify({'Message':questions}), 201
+        # questions = questionObject.view_all_questions()
+        return jsonify({'Message':'Question Posted Successfully'}), 201
 
 @app.route('/api/v1/question', methods=['GET'])
 def getAllQuestions():
@@ -107,7 +118,7 @@ def postAnswer(question_id):
         answer_author = request_data['answer_author']
         question_id = question_id
         answerObject.post_answer(answer_body, answer_author, question_id)
-        return ({"Message": "Answer posted successfully"}), 201
+        return jsonify({"Message": "Answer posted successfully"}), 201
 
 @app.route('/api/v1/questions/<int:question_id>/answers/<int:answer_id>', methods=['PUT'])
 @jwt_required

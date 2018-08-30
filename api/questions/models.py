@@ -51,4 +51,15 @@ class Question():
         except:
             return jsonify({'Message' : 'Questions was not retrived'})
 
+    def view_one_question_by_title(self,question_titlle):
+        sql = "SELECT row_to_json(questions) FROM questions WHERE question_title = %s"
+        try:
+            conn = config.connectToDB()
+            cur = conn.cursor()
+            cur.execute(sql, [question_titlle])
+            conn.commit()
+            thequestion =cur.fetchall()
+            return thequestion
+        except:
+            return jsonify({'Message' : 'Questions was not retrived'})
             

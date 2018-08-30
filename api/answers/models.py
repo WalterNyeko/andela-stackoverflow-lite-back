@@ -12,9 +12,9 @@ class Answer():
             cur = conn.cursor()
             cur.execute(sql, (answer_body, answer_author, question_id))
             conn.commit()
-            return jsonify({'Message' : 'Answer successfully added to the database'})
+            return {'Message' : 'Answer successfully added to the database'}
         except:
-            return jsonify({'Message' : 'Answer was not successfully added to the database'})
+            return {'Message' : 'Answer was not successfully added to the database'}
 
     def delete_answer(self, question_id):
         sql = "DELETE FROM answers WHERE question_id = %s"
