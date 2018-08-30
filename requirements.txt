@@ -1,4 +1,4 @@
-adium-theme-ubuntu==0.3.4
+
 bcrypt==3.1.4
 binary==1.0.0
 cffi==1.11.5

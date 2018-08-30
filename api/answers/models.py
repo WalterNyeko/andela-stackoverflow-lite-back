@@ -62,3 +62,13 @@ class Answer():
             return theanswer
         except:
             return jsonify({'Message' : 'Answer was not retrived'})
+
+    def updateAnswer(self, answer_body, answer_id):
+        sql = "UPDATE answers SET answer_body = %s WHERE answer_id = %s"
+        try:
+            conn = config.connectToDB()
+            cur = conn.cursor()
+            cur.execute(sql, [answer_body, answer_id])
+            conn.commit()
+        except:
+            return jsonify({'Message': 'Update was unsuccessful'})

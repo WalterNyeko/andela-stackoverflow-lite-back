@@ -1,0 +1,6 @@
+{
+  "test_app.py::test_post_question_is_actually_posting": true,
+  "test_app.py::test_post_question_is_not_missing_title": true,
+  "test_app.py::test_post_question_is_not_repeated": true,
+  "test_delete_question.py::test_if_deleted_question_is_completely_deleted": true
+}
