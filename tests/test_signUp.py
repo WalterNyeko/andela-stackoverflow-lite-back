@@ -1,12 +1,10 @@
 import json
 import pytest
 from api.views import app
-from api.users.models import Users
 from validate_email import validate_email
 from api.connectdb import Configurations
 from api.views import SignUp
 
-userObject = Users()
 config = Configurations()
 
 @pytest.fixture
@@ -27,7 +25,6 @@ def test_user_data_is_json_formatted(client):
         assert result == True
     except ValueError:
         assert result == False
-
 
 def test_username_is_not_empty(client):
     username = SignUp.request_data['username']
