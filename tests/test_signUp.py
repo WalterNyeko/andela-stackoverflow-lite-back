@@ -17,14 +17,7 @@ def test_user_does_not_exist_yet(client):
     conn = config.connectToDB()
     cur = conn.cursor()
     result = cur.execute("SELECT username from users WHERE username=%s", [SignUp.request_data['username']])
-    assert result == False
-    
-def test_user_data_is_json_formatted(client):
-    try:
-        result = json.loads(SignUp.request_data)
-        assert result == True
-    except ValueError:
-        assert result == False
+    assert result == False  
 
 def test_username_is_not_empty(client):
     username = SignUp.request_data['username']

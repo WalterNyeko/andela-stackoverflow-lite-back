@@ -11,12 +11,9 @@ def client(request):
 
     return test_client
 
-def test_signUP_response(client):
-    pass
-    # data = { "username": "walter", "email": "email@gmail.com", "password": "1234"}
-    # response = client.post('/api/v1/auth/signup', data)
-    # userObject.signUp(data['username'],data['email'],data['password'])
-    # assert response.status_code == 201
+def test_login_succeeds_always(client):
+    response = client.post('/api/v1/auth/login', data={ "username": "walter", "password": "walter456"})
+    assert 'Successfully Logged In' in response.data
 
 def test_user_does_not_exist(client):
     pass

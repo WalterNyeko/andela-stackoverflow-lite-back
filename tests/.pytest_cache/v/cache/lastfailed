@@ -1,3 +1,6 @@
 {
-  "test_signUp.py": true
+  "test_signUp.py::test_if_dbConnection_is_established": true, 
+  "test_signUp.py::test_user_data_is_json_formatted": true, 
+  "test_signUp.py::test_user_does_not_exist_yet": true, 
+  "test_signUp.py::test_username_is_not_empty": true
 }
