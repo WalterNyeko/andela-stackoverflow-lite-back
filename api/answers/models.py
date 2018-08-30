@@ -1,6 +1,7 @@
 from flask import jsonify
 from api.connectdb import Configurations
 
+
 config = Configurations()
 
 class Answer():
@@ -8,6 +9,7 @@ class Answer():
     def post_answer(self, answer_body, answer_author, question_id):
         sql = "INSERT INTO answers(answer_body, answer_author, question_id) VALUES(%s, %s, %s)"
         try:
+
             conn = config.connectToDB()
             cur = conn.cursor()
             cur.execute(sql, (answer_body, answer_author, question_id))
