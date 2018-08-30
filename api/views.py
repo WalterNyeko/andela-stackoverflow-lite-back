@@ -3,14 +3,12 @@ from api.questions.models import Question
 from api.users.models import Users
 from api.answers.models import Answer
 import datetime
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from api.connectdb import Configurations
-from validate_email import validate_email
 from flask_jwt_extended import (
     JWTManager, jwt_required, create_access_token,
     get_jwt_identity
 )
-# import bcrypt
 import re
 from flasgger import Swagger
 from flasgger.utils import swag_from
@@ -31,7 +29,7 @@ userObject = Users()
 answerObject = Answer()
 
 @app.route('/api/v1/auth/signup', methods=['POST'])
-@swag_from('swagger/post_answer.yml')
+@swag_from('swagger/signUp.yml')
 def SignUp():
     if request.method == 'POST':
         if not request.is_json:
@@ -44,19 +42,20 @@ def SignUp():
             email = request_data['email'].strip()
             password = request_data['password']
             if valid_email(email) == True:
-                # hashed_password = get_hashed_password(password)
+                hashed_password = generate_password_hash(password)
                 
                 result = userObject.checkuser(username)
                 if result is not None:
                     return jsonify({'Message': 'User already exists'})
                 else:   
-                    userObject.signUp(username, email, password)
+                    userObject.signUp(username, email, hashed_password)
                     return jsonify({"Message":"User Created successfully"}), 201
             else:
                 return jsonify({'Message': 'Wrong Email Address'}), 400  
     else:
         return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400
 @app.route('/api/v1/auth/login', methods=['POST'])
+@swag_from('swagger/login.yml')
 def login():
     if request.method == 'POST':
         if not request.is_json:
@@ -69,7 +68,7 @@ def login():
         db_user = userObject.checkuser(username)
         db_pass = userObject.checkPassword(password)
     
-        if username != db_user[0] or password != db_pass[0]:
+        if username != db_user[0] or check_password_hash(password, db_pass[0]) !=True:
             return jsonify({"Message": "Invalid username or password"}), 401
         access_token = create_access_token(identity=username)
         return jsonify({"Messqge" : "Successfully Logged In", "Token" : access_token}), 200
@@ -77,6 +76,7 @@ def login():
     else:
         return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400    
 @app.route('/api/v1/questions', methods=['POST'])
+@swag_from('swagger/post_question.yml')
 @jwt_required
 def postQuestion():
     if request.method == 'POST':
@@ -96,11 +96,13 @@ def postQuestion():
     else:
         return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400
 @app.route('/api/v1/questions', methods=['GET'])
+@swag_from('swagger/view_questions.yml')
 def getAllQuestions():
     questions = questionObject.view_all_questions()
     return jsonify({'Questions': questions}), 200
 
 @app.route('/api/v1/questions/<int:question_id>', methods=['GET'])
+@swag_from('swagger/view_one_question.yml')
 def getOneQuestionById(question_id):
     question = questionObject.view_one_question(question_id=question_id)
     answers = answerObject.view_all_answer(question_id)
@@ -112,6 +114,7 @@ def getOneQuestionById(question_id):
     
 
 @app.route('/api/v1/questions/<int:question_id>', methods=['DELETE'])
+@swag_from('swagger/delete_question.yml')
 @jwt_required
 def DeleteQuestion(question_id):
     author = questionObject.view_question_author(question_id)
@@ -124,6 +127,7 @@ def DeleteQuestion(question_id):
         return jsonify({'Message' : 'You are not the author of this question'}), 400
     
 @app.route('/api/v1/questions/<int:question_id>/answers', methods=['POST'])
+@swag_from('swagger/post_answer.yml')
 @jwt_required
 def postAnswer(question_id):
     request_data  = request.get_json()
@@ -139,6 +143,7 @@ def postAnswer(question_id):
         return jsonify({"Message": "Answer posted successfully"}), 201
 
 @app.route('/api/v1/questions/<int:question_id>/answers/<int:answer_id>', methods=['PUT'])
+@swag_from('swagger/accept_answer.yml')
 @jwt_required
 def acceptAnswer(question_id, answer_id):
     if request.method == 'PUT':

@@ -17,13 +17,14 @@ schemes:
 - "https"
 - "http"
 
-  /questions/question_id/answers:
+paths:
+  /questions:
     post:
       tags:
-      - "Answers"
-      summary: "Post Answer"
+      - "Questions"
+      summary: "Ask Question"
       description: ""
-      operationId: "addAnswer"
+      operationId: "addPet"
       consumes:
       - "application/json"
       - "application/xml"
@@ -33,18 +34,44 @@ schemes:
       parameters:
       - in: "body"
         name: "body"
-        description: "The answer that needs to be posted"
+        description: "The question that needs to be asked"
         required: true
         schema:
-          $ref: "#"
+          $ref: "#/definitions/Pet"
       responses:
         201:
-          description: "Success Posting Answer"
+          description: "Success Posting Question"
       security:
       - petstore_auth:
         - "write:pets"
         - "read:pets"
-securityDefinitions:
+
+
+  /question:
+    get:
+      tags:
+      - "Questions"
+      summary: "Get All The Questions"
+      description: "This will return all the questions asked so far"
+      operationId: "getAllQuestions"
+      produces:
+      - "application/xml"
+      - "application/json"
+     
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Pet"
+        400:
+          description: "Invalid status value"
+      security:
+      - petstore_auth:
+        - "write:pets"
+        - "read:pets"
+ securityDefinitions:
   petstore_auth:
     type: "oauth2"
     authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
@@ -178,4 +205,4 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-
+ 

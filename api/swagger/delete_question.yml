@@ -17,29 +17,31 @@ schemes:
 - "https"
 - "http"
 
-  /questions/question_id/answers:
-    post:
+    delete:
       tags:
-      - "Answers"
-      summary: "Post Answer"
+      - "Questions"
+      summary: "Deletes a question with all its answers"
       description: ""
-      operationId: "addAnswer"
-      consumes:
-      - "application/json"
-      - "application/xml"
+      operationId: "deleteQuestion"
       produces:
       - "application/xml"
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "The answer that needs to be posted"
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "questionId"
+        in: "path"
+        description: "Question id to delete"
         required: true
-        schema:
-          $ref: "#"
+        type: "integer"
+        format: "int64"
       responses:
-        201:
-          description: "Success Posting Answer"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Question not found"
       security:
       - petstore_auth:
         - "write:pets"
@@ -178,4 +180,3 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-

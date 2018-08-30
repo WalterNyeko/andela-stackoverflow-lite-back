@@ -17,33 +17,32 @@ schemes:
 - "https"
 - "http"
 
-  /questions/question_id/answers:
-    post:
+
+/auth/login:
+    get:
       tags:
-      - "Answers"
-      summary: "Post Answer"
+      - "Users"
+      summary: "Users Login"
       description: ""
-      operationId: "addAnswer"
-      consumes:
-      - "application/json"
-      - "application/xml"
+      operationId: "Userid"
       produces:
       - "application/xml"
       - "application/json"
       parameters:
       - in: "body"
         name: "body"
-        description: "The answer that needs to be posted"
+        description: "The logged in User"
         required: true
         schema:
-          $ref: "#"
+          $ref: "#/definitions/Order"
       responses:
-        201:
-          description: "Success Posting Answer"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Order"
+        400:
+          description: "Invalid Username"
+
 securityDefinitions:
   petstore_auth:
     type: "oauth2"
@@ -178,4 +177,3 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-

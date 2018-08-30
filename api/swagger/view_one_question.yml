@@ -1,3 +1,4 @@
+
 swagger: "2.0"
 info:
   description: "This is a pythonic version of StackOverflow, a site that allows clients to ask questions and eventually recieve responses to their questions."
@@ -17,34 +18,38 @@ schemes:
 - "https"
 - "http"
 
-  /questions/question_id/answers:
-    post:
+  
+  /questions/question_id:
+    get:
       tags:
-      - "Answers"
-      summary: "Post Answer"
-      description: ""
-      operationId: "addAnswer"
-      consumes:
-      - "application/json"
-      - "application/xml"
+      - "Questions"
+      summary: "Find Question by its ID"
+      description: "Returns a single pet"
+      operationId: "getquestionById"
       produces:
       - "application/xml"
       - "application/json"
       parameters:
-      - in: "body"
-        name: "body"
-        description: "The answer that needs to be posted"
+      - name: "questionId"
+        in: "path"
+        description: "ID of Question to return"
         required: true
-        schema:
-          $ref: "#"
+        type: "integer"
+        format: "int64"
       responses:
-        201:
-          description: "Success Posting Answer"
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Pet"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "Question not found"
       security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-securityDefinitions:
+      - api_key: []
+    
+
+    securityDefinitions:
   petstore_auth:
     type: "oauth2"
     authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
@@ -178,4 +183,3 @@ definitions:
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"
-

@@ -1,0 +1,18 @@
+{
+  "tests/test_app.py::test_get_a_question_is_successfully_rendered_for_details_page_with_id": true, 
+  "tests/test_app.py::test_get_all_questions_is_successfully_rendered": true, 
+  "tests/test_app.py::test_post_question_is_actually_posting": true, 
+  "tests/test_app.py::test_post_question_is_not_missing_title": true, 
+  "tests/test_delete_question.py::test_if_dbConnection_is_established": true, 
+  "tests/test_delete_question.py::test_if_deleted_question_is_completely_deleted": true, 
+  "tests/test_delete_question.py::test_question_successfully_inserted_in_the_db": true, 
+  "tests/test_login.py::test_if_dbConnection_is_established": true, 
+  "tests/test_login.py::test_if_deleted_question_is_completely_deleted": true, 
+  "tests/test_login.py::test_question_successfully_inserted_in_the_db": true, 
+  "tests/test_login.py::test_successfully_logged_in": true, 
+  "tests/test_login.py::test_user_can_access_the_route": true, 
+  "tests/test_login.py::test_user_gets_the_token": true, 
+  "tests/test_login.py::test_user_provided_password": true, 
+  "tests/test_signUp.py::test_if_dbConnection_is_established": true, 
+  "tests/test_signUp.py::test_user_does_not_exist_yet": true
+}
