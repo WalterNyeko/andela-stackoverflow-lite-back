@@ -144,16 +144,16 @@ def acceptAnswer(question_id, answer_id):
     if request.method == 'PUT':
         
         theanswer = answerObject.view_one_answer(answer_id)
-        if request.get_json():
-            request_data = request.get_json()
-            answer_body = request_data['answer_body'].strip()
-            answerObject.updateAnswer(answer_body, answer_id)
+        
+        # request_data = request.get_json()
+        # answer_body = request_data['answer_body'].strip()
+        # answerObject.updateAnswer(answer_body, answer_id)
+    
+        if theanswer == 1:
+            return jsonify({"Message" :"This Answer Is Already Accepted"}), 400
         else:
-            if theanswer == 1:
-                return jsonify({"Message" :"This Answer Is Already Accepted"}), 400
-            else:
-                answerObject.accept_answer(answer_id)
-                return jsonify({"Message": "Answer Accepted Successfully"}), 200
+            answerObject.accept_answer(answer_id)
+            return jsonify({"Message": "Answer Accepted Successfully"}), 200
     else:
         return jsonify({'Message': 'Wrong HTTP Request Method Detected'})
 # def get_hashed_password(plain_text_password):
