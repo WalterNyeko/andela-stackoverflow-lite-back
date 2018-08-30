@@ -24,7 +24,7 @@ def test_question_successfully_inserted_in_the_db(client):
 
 def test_if_deleted_question_is_completely_deleted(client):
     response = client.get('/api/v1/questions/7')
-    assert response.status_code == 202
+    assert response.status_code == 404
 
 
 def test_if_dbConnection_is_established(client):
