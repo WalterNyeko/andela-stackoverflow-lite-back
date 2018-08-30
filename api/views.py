@@ -75,9 +75,13 @@ def postQuestion():
         question_title = request_data['question_title']
         question_body = request_data['question_body']
         question_author = request_data['question_author']
-        questionObject.post_question(question_title, question_body, question_author)
-        questions = questionObject.view_all_questions()
-        return jsonify({'Message':questions}), 201
+        question_exists = questionObject.view_one_question_by_title(question_title)
+        if question_exists is not None:
+            return jsonify({'Message': 'Question already exists'})
+        else:
+            questionObject.post_question(question_title, question_body, question_author)
+            questions = questionObject.view_all_questions()
+            return jsonify({'Message':questions}), 201
 
 @app.route('/api/v1/question', methods=['GET'])
 def getAllQuestions():
