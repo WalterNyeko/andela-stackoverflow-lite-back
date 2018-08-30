@@ -4,11 +4,18 @@ from api.users.models import Users
 from api.answers.models import Answer
 import datetime
 from werkzeug.security import check_password_hash
-import jwt
 from api.connectdb import Configurations
-# from functools import wraps
+from validate_email import validate_email
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
+
 
 app = Flask(__name__)
+
+app.config['JWT_SECRET_KEY'] = 'somesecretstuffsforjwt'
+jwt = JWTManager(app)
 
 app.config['SECRET_KEY'] = 'my-secret-keys-are-here'
 
@@ -18,25 +25,6 @@ questionObject = Question()
 userObject = Users()
 answerObject = Answer()
 
-def token_required(f):
-    # @wraps
-    def decorated(*args, **kwargs):
-        token = None
-        if 'stackoverflow-lite' in request.headers:
-            token = request.headers['stackoverflow-lite']
-        if not token:
-            return jsonify({'Message' : 'Token is missing'})
-        try:
-            data = jwt.decode(token, app.config['SECRET_KEY'])
-            conn = config.connectToDB()
-            cur = conn.cursor()
-            cur.execute("SELECT * FROM users WHERE username = %s AND password = %s;", (data['username'],data['password']) )
-            current_user = cur.fetchone()
-        except:
-            return jsonify({'Message' : 'Token is invalid'})
-        return f(current_user, *args, **kwargs)
-    return decorated
-
 @app.route('/api/v1/auth/signup', methods=['POST', 'GET'])
 def SignUp():
     request_data  = request.get_json()
@@ -44,30 +32,41 @@ def SignUp():
         return "Please fill in the username"
     else:
         username = request_data['username']
-        
         email = request_data['email']
         password = request_data['password']
-        userObject.signUp(username, email, password)
-        return jsonify({"Message":"User Created successfully"}), 201
+        is_valid = validate_email(email,verify=True)
+        if (is_valid==True):
 
-@app.route('/api/v1/auth/login', methods=['GET'])
-@token_required
-def LogIn():
-    auth = request.authorization
-    if not auth or not auth.username or not auth.password:
-        return make_response('Could not verify user', 404, {'WWW-Authentication' : 'Basic realm="Login Required"'})
-    conn = config.connectToDB()
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM users WHERE username = %s AND password= %s;", auth.password)
-    user = cur.fetchall()
-    if not user:
-        return make_response('Could not verify user', 404, {'WWW-Authentication' : 'Basic realm="Login Required"'})
-    if check_password_hash(user.password, auth.password):
-        token = jwt.encode({'Username' : auth.username, 'Exp' : datetime.datetime.utcnow()+ datetime.timedelta(minutes=30)}, "Thisissecretkey")
-        return jsonify({'Token' : token.decode('UTF-8')})
-    return make_response('Could not verify user', 404, {'WWW-Authentication' : 'Basic realm="Login Required"'})
+            conn = config.connectToDB()
+            cur = conn.cursor()
+            result = cur.execute("SELECT username from users WHERE username=%s", [username])
+            if result is not None:
+                return jsonify({'Message': 'User already exists'})
+            else:   
+                userObject.signUp(username, email, password)
+                return jsonify({"Message":"User Created successfully"}), 201
+        else:
+            return jsonify({'Message': 'Wrong Email Detected'}), 400
+        
+        
+
+@app.route('/api/v1/auth/login', methods=['POST'])
+def login():
+    if not request.is_json:
+        return jsonify({"Message": "No JSON format is provided"}), 400
+
+    username = request.json.get('username', None)
+    password = request.json.get('password', None)
+    if not username:
+        return jsonify({"Message": "Username is missing"}), 400
+    if username != 'test' and password != 'test':
+        return jsonify({"Message": "Bad username or password"}), 401
+
+    access_token = create_access_token(identity=username)
+    return jsonify({"Messqge" : "Successfully Logged In", "Token" : access_token}), 200
 
 @app.route('/api/v1/questions', methods=['POST', 'GET'])
+@jwt_required
 def postQuestion():
     request_data  = request.get_json()
     if request_data['question_title'].strip() == "":
@@ -92,12 +91,14 @@ def getOneQuestionById(question_id):
     return jsonify({'Questions': question, 'Answers' : answers}), 200
 
 @app.route('/api/v1/questions/<int:question_id>', methods=['DELETE'])
+@jwt_required
 def DeleteQuestion(question_id):
     answerObject.delete_answer(question_id)
     questionObject.delete_question(question_id)
     return jsonify({'Questions' : 'Question Successfully Deleted'}), 202
       
 @app.route('/api/v1/questions/<int:question_id>/answers', methods=['POST'])
+@jwt_required
 def postAnswer(question_id):
     request_data  = request.get_json()
     if request_data['answer_body'].strip() == "":
@@ -110,6 +111,7 @@ def postAnswer(question_id):
         return ({"Message": "Answer posted successfully"}), 201
 
 @app.route('/api/v1/questions/<int:question_id>/answers/<int:answer_id>', methods=['PUT'])
+@jwt_required
 def acceptAnswer(question_id, answer_id):
     theanswer = answerObject.view_one_answer(answer_id)
     if theanswer == 1:
