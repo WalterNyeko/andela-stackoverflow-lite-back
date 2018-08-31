@@ -40,7 +40,7 @@ def test_user_provided_password(client):
     response = client.get('/api/v1/questions/7')
     assert response.status_code == 202
 
-def test_user_gets_the_token(client):
+def test_user_gets_the_generated_token(client):
     response = client.get('/api/v1/auth/login')
     data = request.getjson()
     username = data['username']
