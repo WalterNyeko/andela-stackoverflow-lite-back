@@ -26,7 +26,7 @@ def test_get_all_questions_is_successfully_rendered(client):
     assert response.status_code == 200
 
 # Testing if the URL for getting one question is accessible
-def test_get_a_question_is_successfully_rendered_for_details_page_with_id(client):
+def test_get_a_question_is_successfully_rendered(client):
     response = client.get('/api/v1/questions/35')
     assert response.status_code == 200
 

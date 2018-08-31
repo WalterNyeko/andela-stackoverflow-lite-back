@@ -53,7 +53,7 @@ def SignUp():
             else:
                 return jsonify({'Message': 'Wrong Email Address'}), 400  
     else:
-        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400
+        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 405
 @app.route('/api/v1/auth/login', methods=['POST'])
 @swag_from('swagger/login.yml')
 def login():
@@ -74,7 +74,7 @@ def login():
         return jsonify({"Messqge" : "Successfully Logged In", "Token" : access_token}), 200
 
     else:
-        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400    
+        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 405    
 @app.route('/api/v1/questions', methods=['POST'])
 @swag_from('swagger/post_question.yml')
 @jwt_required
@@ -92,9 +92,9 @@ def postQuestion():
         
             print(current_user)
             questionObject.post_question(question_title, question_body, current_user)
-            return jsonify({'Message':'Question Posted Successfully'}), 201
+            return jsonify({'Message':'Question posted successfully'}), 201
     else:
-        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 400
+        return jsonify({'Message' : 'Wrong HTTP Request Method Detected'}), 405
 @app.route('/api/v1/questions', methods=['GET'])
 @swag_from('swagger/view_questions.yml')
 def getAllQuestions():
@@ -168,7 +168,7 @@ def acceptAnswer(question_id, answer_id):
             else:
                 return jsonify({'Message' : 'You are not the author of this question and you so you cannot mark it as favorite'})
     else:
-        return jsonify({'Message': 'Wrong HTTP Request Method Detected'})
+        return jsonify({'Message': 'Wrong HTTP Request Method Detected'}), 405
 
 def valid_email(email):
   return bool(re.match(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", email))
