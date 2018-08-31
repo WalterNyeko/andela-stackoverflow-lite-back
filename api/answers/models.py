@@ -40,7 +40,7 @@ class Answer():
             return jsonify({'Message' : 'Answer was not successfully accepted'})
 
     def view_one_answer(self,answer_id):
-        sql = "SELECT answer_status FROM answers WHERE answer_id = %s"
+        sql = "SELECT answer_status, answer_author FROM answers WHERE answer_id = %s"
         try:
             conn = config.connectToDB()
             cur = conn.cursor()
@@ -49,7 +49,7 @@ class Answer():
             theanswer =cur.fetchall()
             return theanswer
         except:
-            return jsonify({'Message' : 'Answer was not retrived'})
+            return jsonify({'Message' : 'Answer was not retrieved'})
 
     def view_all_answer(self,question_id):
         sql = "SELECT row_to_json(answers) FROM answers WHERE question_id = %s"
@@ -61,7 +61,7 @@ class Answer():
             theanswer =cur.fetchall()
             return theanswer
         except:
-            return jsonify({'Message' : 'Answer was not retrived'})
+            return jsonify({'Message' : 'Answer was not retrieved'})
 
     def updateAnswer(self, answer_body, answer_id):
         sql = "UPDATE answers SET answer_body = %s WHERE answer_id = %s"
@@ -72,3 +72,16 @@ class Answer():
             conn.commit()
         except:
             return jsonify({'Message': 'Update was unsuccessful'})
+            
+    def view_question_author(self,question_id):
+        sql = "SELECT question_author FROM questions WHERE question_id = %s"
+        try:
+            conn = config.connectToDB()
+            cur = conn.cursor()
+            cur.execute(sql, [question_id])
+            conn.commit()
+            thequestion =cur.fetchone()
+            return thequestion
+        except:
+            return jsonify({'Message' : 'Author was not retrieved'})
+            

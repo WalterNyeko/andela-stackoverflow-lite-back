@@ -149,23 +149,26 @@ def acceptAnswer(question_id, answer_id):
     if request.method == 'PUT':
         
         theanswer = answerObject.view_one_answer(answer_id)
-        
-        # request_data = request.get_json()
-        # answer_body = request_data['answer_body'].strip()
-        # answerObject.updateAnswer(answer_body, answer_id)
-    
-        if theanswer == 1:
+        question_author = answerObject.view_question_author(question_id)
+        current_user = get_jwt_identity()
+        if request.get_json()== True:
+            if theanswer[1] == current_user:
+                request_data = request.get_json()
+                answer_body = request_data['answer_body'].strip()
+                answerObject.updateAnswer(answer_body, answer_id)
+            else:
+                return jsonify({'Message' : 'You are not the author of this answer and can not edit'})
+
+        if theanswer[0] == 1:
             return jsonify({"Message" :"This Answer Is Already Accepted"}), 400
         else:
-            answerObject.accept_answer(answer_id)
-            return jsonify({"Message": "Answer Accepted Successfully"}), 200
+            if question_author == current_user:
+                answerObject.accept_answer(answer_id)
+                return jsonify({"Message": "Answer Accepted Successfully"}), 200
+            else:
+                return jsonify({'Message' : 'You are not the author of this question and you so you cannot mark it as favorite'})
     else:
         return jsonify({'Message': 'Wrong HTTP Request Method Detected'})
-# def get_hashed_password(plain_text_password):
-#     return bcrypt.hashpw(plain_text_password, bcrypt.gensalt())
-
-# def check_password(plain_text_password, hashed_password):
-#     return bcrypt.checkpw(plain_text_password, hashed_password)
 
 def valid_email(email):
   return bool(re.match(r"^[\w\.\+\-]+\@[\w]+\.[a-z]{2,3}$", email))

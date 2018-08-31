@@ -14,5 +14,10 @@
   "tests/test_login.py::test_user_gets_the_token": true, 
   "tests/test_login.py::test_user_provided_password": true, 
   "tests/test_signUp.py::test_if_dbConnection_is_established": true, 
-  "tests/test_signUp.py::test_user_does_not_exist_yet": true
+  "tests/test_signUp.py::test_user_does_not_exist_yet": true, 
+  "tests/test_token.py::test_if_dbConnection_is_established": true, 
+  "tests/test_token.py::test_successfully_logged_in": true, 
+  "tests/test_token.py::test_user_can_access_the_route": true, 
+  "tests/test_token.py::test_user_gets_the_generated_token": true, 
+  "tests/test_token.py::test_user_provided_password": true
 }
